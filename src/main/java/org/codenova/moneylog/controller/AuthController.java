@@ -129,7 +129,8 @@ public class AuthController {
 
     @GetMapping("/naver/callback")
     public String naverCallbackHandle(@RequestParam("code") String code,
-                                      @RequestParam("state") String state) throws JsonProcessingException {
+                                      @RequestParam("state") String state,
+                                      HttpSession session) throws JsonProcessingException {
 
         // log.info("code = {}, state = {}", code, state);
 
@@ -142,6 +143,27 @@ public class AuthController {
         log.info("profileResponse id = {}", profileResponse.getId());
         log.info("profileResponse nickname = {}", profileResponse.getNickname());
         log.info("profileResponse profileImage = {}", profileResponse.getProfileImage());
+
+        User found = userRepository.findByProviderAndProviderId("NAVER", profileResponse.getId());
+
+        // 세션에 user 값이 없다면
+        // user 객체를 만들어서 save
+        if (found == null) {
+            User user = User.builder()
+                    .provider("NAVER")
+                    .providerId(profileResponse.getId())
+                    .nickname(profileResponse.getNickname())
+                    .picture(profileResponse.getProfileImage())
+                    .verified("T")
+                    .build();
+
+            userRepository.save(user);
+            session.setAttribute("user", user);
+
+         // DB에 있는 user 라면
+        } else {
+            session.setAttribute("user", found);
+        }
 
         return "redirect:/index";
     }
