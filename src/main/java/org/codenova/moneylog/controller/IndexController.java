@@ -10,7 +10,7 @@ import java.util.Optional;
 @Controller
 public class IndexController {
 
-    @GetMapping("/index")
+    @GetMapping({"/", "/index"})
     public String indexHandle(@SessionAttribute("user") Optional<User> user, Model model) {
 
         if (user.isEmpty()) {   // 옵셔널에 데이터가 존재하지 않는다면
