@@ -24,4 +24,27 @@
         where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
         order by expense_date asc, id asc
     </select>
+
+    <!-- 이번주 지출 총액 -->
+    <select id="weeklyTotalAmountExpense" resultType="int">
+        select ifnull(sum(amount), 0) from expenses
+        where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
+    </select>
+
+    <!-- 이번주 지출금액 Top3 -->
+    <select id="WeeklyTop3Expense" resultType="expense">
+        select * from expenses
+        where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
+        order by amount desc limit 3
+    </select>
+
+    <!-- 이번주 가장 많이 소비한 항목 -->
+    <select id="WeeklyTopExpense" resultType="categoryExpense">
+        select t.*, categorys.name as category_name from (
+        select category_id, sum(amount) as total from expenses
+        where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
+        group by category_id
+        ) as t join categorys on t.category_id = categorys.id
+        order by total desc
+    </select>
 </mapper>

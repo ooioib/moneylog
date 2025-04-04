@@ -27,6 +27,10 @@ public class ExpenseController {
         model.addAttribute("categorys", categoryRepository.findAll());
         model.addAttribute("now", LocalDate.now());
         model.addAttribute("expenses", expenseRepository.findWithCategoryByUserId(user.getId()));
+//        model.addAttribute("expenses", expenseRepository.findByUserIdAndDuration
+//                (user.getId(), LocalDate.now().minusDays(10), LocalDate.now()));
+//        findByWithCategoryByUserIdAndDuration
+
 
         return "expense/history";
     }
@@ -35,7 +39,6 @@ public class ExpenseController {
     public String historyPostHandle(@ModelAttribute @Valid AddExpenseRequest addExpenseRequest,
                                     BindingResult bindingResult,
                                     @SessionAttribute("user") User user,
-                                    // @SessionAttribute("userId") int userId,
                                     Model model) {
 
 
@@ -49,7 +52,6 @@ public class ExpenseController {
         }
 
         Expense expense = Expense.builder()
-                // .userId(userId)
                 .userId(user.getId())
                 .expenseDate(addExpenseRequest.getExpenseDate())
                 .amount(addExpenseRequest.getAmount())
