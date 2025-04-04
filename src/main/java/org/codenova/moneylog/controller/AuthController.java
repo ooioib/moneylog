@@ -68,16 +68,18 @@ public class AuthController {
             Model model) {
 
         User user = userRepository.findByEmail(loginRequest.getEmail());
-
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
+
             session.setAttribute("user", user);
 
             return "redirect:/index";
 
         } else {
+
             return "redirect:/auth/login";
         }
     }
+
 
     // ======================================================================================
     // 회원가입 처리 핸들
@@ -232,6 +234,7 @@ public class AuthController {
 
             userRepository.save(user);
             session.setAttribute("user", user);
+         // session.setAttribute("userId", user.getId());
         }
 
         // log.info("decodedJWT: sub={}, nickname={}, picture={}", sub, nickname, picture);
@@ -273,7 +276,9 @@ public class AuthController {
                     .build();
 
             userRepository.save(user);
+
             session.setAttribute("user", user);
+            // session.setAttribute("userId", user.getId());
 
             // DB에 있는 user 라면
         } else {
