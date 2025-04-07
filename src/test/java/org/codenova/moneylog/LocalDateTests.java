@@ -72,6 +72,16 @@ public class LocalDateTests {
      */
 
 
+    public void test3() {
 
+        LocalDate day = LocalDate.of(2025, 2, 1);
+
+        // 시작일과 끝일 구하기
+        LocalDate startDay = day.minusDays(day.getDayOfMonth() -1);
+        LocalDate endDay = startDay.plusMonths(1).minusDays(1);
+
+        System.out.println(startDay);
+        System.out.println(endDay);
+    }
 
 }

@@ -35,7 +35,6 @@ public class IndexController {
     @GetMapping("/home")
     public String homeHandle(@SessionAttribute("user") Optional<User> user, Model model) {
 
-
         LocalDate today = LocalDate.now();
         LocalDate startDate = today.minusDays(today.getDayOfWeek().getValue() - 1);
         LocalDate endDate = today.plusDays(7 - today.getDayOfWeek().getValue());
